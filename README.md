@@ -58,16 +58,13 @@ A seed file is included for better testing.
    Open your browser to: http://localhost:3000
 
 
-5. **Run tests**
-```bash
-   docker-compose exec web bundle exec rspec
-```
-
 ## Running Tests Locally
 
 This project uses RSpec for testing.
 
 ### First Time Setup
+
+Make sure to set the .env file as mentioned previously.
 
 Install dependencies and set up the test database:
 
