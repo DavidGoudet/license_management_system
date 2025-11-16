@@ -113,10 +113,6 @@ license_management_system/
 │   │   └── license_assignment_service.rb
 │   │
 │   ├── views/
-│   │   ├── ...
-│   │   │
-│   │   └── shared/
-│   │       └── _flash_messages.html.erb
 │
 ├── db/
 │   ├── migrate/
