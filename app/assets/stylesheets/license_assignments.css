@@ -1,0 +1,55 @@
+/* License Assignment View Styling */
+
+/* Product and User list boxes */
+.border {
+    border: 2px solid #dee2e6 !important;
+    border-radius: 4px;
+    overflow-y: auto;
+  }
+  
+  /* Form check items */
+  .form-check {
+    padding: 8px 12px;
+  }
+  
+  .form-check:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+  }
+  
+  .form-check-label {
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  /* Buttons */
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    padding: 10px 20px;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  
+  /* Error bar styling (matches PDF red bar) */
+  .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+  
+  /* Table styling */
+  .table-sm th,
+  .table-sm td {
+    padding: 8px;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }

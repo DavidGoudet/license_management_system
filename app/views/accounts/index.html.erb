@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Accounts</h1>
+  <%= link_to "New Account", new_account_path, class: "btn btn-primary" %>
+</div>
+
+<% if @accounts.any? %>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Users</th>
+          <th>Subscriptions</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @accounts.each do |account| %>
+          <tr>
+            <td><%= link_to account.name, account_path(account) %></td>
+            <td><%= account.users.count %></td>
+            <td><%= account.subscriptions.count %></td>
+            <td>
+              <%= link_to "View", account_path(account), class: "btn btn-sm btn-info" %>
+              <%= link_to "Edit", edit_account_path(account), class: "btn btn-sm btn-warning" %>
+              <%= button_to "Delete", account_path(account), 
+                            method: :delete, 
+                            class: "btn btn-sm btn-danger",
+                            form: { data: { turbo_confirm: "Are you sure? This will delete all users, subscriptions, and license assignments." } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    No accounts yet. <%= link_to "Create your first account", new_account_path %>.
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+<%= form_with(model: account, local: true) do |form| %>
+    <% if account.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(account.errors.count, "error") %> prohibited this account from being saved:</h4>
+        <ul>
+          <% account.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-control", placeholder: "Enter account name" %>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+  <% end %>

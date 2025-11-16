@@ -1,0 +1,27 @@
+<%= form_with(model: [@account, user], local: true) do |form| %>
+    <% if user.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h4>
+        <ul>
+          <% user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name, class: "form-control", placeholder: "Enter user name" %>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.label :email, class: "form-label" %>
+      <%= form.email_field :email, class: "form-control", placeholder: "user@example.com" %>
+      <div class="form-text">Email must be unique across all accounts.</div>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+  <% end %>

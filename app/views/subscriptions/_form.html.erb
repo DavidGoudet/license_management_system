@@ -1,0 +1,46 @@
+<%= form_with(model: [@account, subscription], local: true) do |form| %>
+    <% if subscription.errors.any? %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(subscription.errors.count, "error") %> prohibited this subscription from being saved:</h4>
+        <ul>
+          <% subscription.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="mb-3">
+      <%= form.label :product_id, "Product", class: "form-label" %>
+      <%= form.select :product_id, 
+                      options_from_collection_for_select(@available_products, :id, :name, subscription.product_id),
+                      { prompt: "Select a product" },
+                      { class: "form-select" } %>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.label :number_of_licenses, "Number of Licenses", class: "form-label" %>
+      <%= form.number_field :number_of_licenses, class: "form-control", min: 1, placeholder: "e.g., 10" %>
+      <div class="form-text">Must be a positive number.</div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <%= form.label :issued_at, "Issued Date", class: "form-label" %>
+        <%= form.datetime_local_field :issued_at, 
+                                       class: "form-control",
+                                       value: subscription.issued_at&.strftime("%Y-%m-%dT%H:%M") || Time.current.strftime("%Y-%m-%dT%H:%M") %>
+      </div>
+  
+      <div class="col-md-6 mb-3">
+        <%= form.label :expires_at, "Expiration Date", class: "form-label" %>
+        <%= form.datetime_local_field :expires_at, 
+                                       class: "form-control",
+                                       value: subscription.expires_at&.strftime("%Y-%m-%dT%H:%M") || 1.year.from_now.strftime("%Y-%m-%dT%H:%M") %>
+      </div>
+    </div>
+  
+    <div class="mb-3">
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+  <% end %>

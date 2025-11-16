@@ -1,0 +1,35 @@
+<div id="current-assignments-table">
+  <% if current_assignments.any? %>
+    <div class="mt-5">
+      <h5>Current Assignments</h5>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all-assignments" class="form-check-input"></th>
+              <th>User</th>
+              <th>Product</th>
+              <th>Assigned Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_assignments.each do |assignment| %>
+              <tr>
+                <td>
+                  <input type="checkbox" 
+                         class="form-check-input assignment-checkbox" 
+                         value="<%= assignment.id %>">
+                </td>
+                <td><%= assignment.user.name %></td>
+                <td><%= assignment.product.name %></td>
+                <td><%= assignment.created_at.strftime("%b %d, %Y") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <p class="mt-5 text-muted">No licenses assigned yet.</p>
+  <% end %>
+</div>

@@ -1,0 +1,17 @@
+<div id="product-licenses-list">
+  <div class="border p-3" style="min-height: 400px; background-color: #f8f9fa;">
+    <% products_with_licenses.each do |product_data| %>
+      <div class="form-check mb-2">
+        <%= check_box_tag "product_ids[]",
+                          product_data[:product].id,
+                          false,
+                          class: "form-check-input product-checkbox",
+                          id: "product_#{product_data[:product].id}" %>
+        <%= label_tag "product_#{product_data[:product].id}", class: "form-check-label" do %>
+          <%= product_data[:product].name %>
+          (<%= product_data[:used_licenses] %>/<%= product_data[:total_licenses] %>)
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

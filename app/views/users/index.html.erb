@@ -1,0 +1,43 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Accounts", accounts_path %></li>
+    <li class="breadcrumb-item"><%= link_to @account.name, account_path(@account) %></li>
+    <li class="breadcrumb-item active">Users</li>
+  </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Users - <%= @account.name %></h1>
+  <%= link_to "Add User", new_account_user_path(@account), class: "btn btn-primary" %>
+</div>
+
+<% if @users.any? %>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Licenses</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.license_assignments.count %></td>
+            <td><%= user.created_at.strftime("%B %d, %Y") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info">
+    No users yet. <%= link_to "Add your first user", new_account_user_path(@account) %>.
+  </div>
+<% end %>
+
+<%= link_to "Back to Account", account_path(@account), class: "btn btn-secondary mt-3" %>

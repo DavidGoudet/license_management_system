@@ -1,0 +1,180 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Accounts", accounts_path %></li>
+    <li class="breadcrumb-item"><%= link_to @account.name, account_path(@account) %></li>
+    <li class="breadcrumb-item active">License Assignments</li>
+  </ol>
+</nav>
+
+<h2 class="mb-4">Account: <%= @account.name %></h2>
+
+<% if @products_with_licenses.empty? %>
+  <div class="alert alert-warning">
+    <h4>No Active Subscriptions</h4>
+    <p>This account doesn't have any active subscriptions. Please <%= link_to "create a subscription", new_account_subscription_path(@account) %> first.</p>
+  </div>
+  <%= link_to "Back to Account", account_path(@account), class: "btn btn-secondary" %>
+<% elsif @users.empty? %>
+  <div class="alert alert-warning">
+    <h4>No Users</h4>
+    <p>This account doesn't have any users. Please <%= link_to "add users", new_account_user_path(@account) %> first.</p>
+  </div>
+  <%= link_to "Back to Account", account_path(@account), class: "btn btn-secondary" %>
+<% else %>
+
+  <!-- Single Flash Messages Display -->
+  <%= render partial: "license_assignments/flash" %>
+
+
+  <%= form_with url: account_license_assignments_path(@account), 
+                method: :post, 
+                id: "assignment-form",
+                data: { turbo: true } do |form| %>
+    <div class="row">
+      <!-- Product Licenses Column (LEFT) -->
+      <div class="col-md-5">
+        <h5 class="mb-3">Product Licenses</h5>
+        <%= render "license_assignments/product_list",
+           products_with_licenses: @products_with_licenses %>
+
+      </div>
+
+      <!-- Action Buttons Column (MIDDLE) -->
+      <div class="col-md-2 d-flex flex-column align-items-center justify-content-center">
+        <%= button_tag type: "submit", class: "btn btn-secondary mb-3 w-100" do %>
+          Assign
+        <% end %>
+        
+        <%= button_tag type: "button", class: "btn btn-secondary w-100", id: "unassign-btn" do %>
+          Unassign
+        <% end %>
+      </div>
+
+      <!-- Users Column (RIGHT) -->
+      <div class="col-md-5">
+        <h5 class="mb-3">Users</h5>
+        <div class="border p-3" style="min-height: 400px; background-color: #f8f9fa;">
+          <% @users.each do |user| %>
+            <div class="form-check mb-2">
+              <%= check_box_tag "user_ids[]", 
+                                user.id, 
+                                false, 
+                                class: "form-check-input user-checkbox",
+                                id: "user_#{user.id}" %>
+              <%= label_tag "user_#{user.id}", user.name, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Unassign Form -->
+  <%= form_with url: bulk_destroy_account_license_assignments_path(@account), 
+  method: :delete, 
+  id: "unassign-form",
+  data: { turbo: true },
+  style: "display: none;" do |form| %>
+<div id="unassign-payload"></div>
+<% end %>
+
+  <!-- Current Assignments Table -->
+<%= render "license_assignments/assignments_table",
+           current_assignments: @current_assignments %>
+
+  </div>
+
+  <div class="mt-4">
+    <%= link_to "Back to Account", account_path(@account), class: "btn btn-secondary" %>
+  </div>
+
+<% end %>
+
+<script>
+// Handle select all checkbox
+document.addEventListener('DOMContentLoaded', function() {
+  attachEventListeners();
+});
+
+// Re-attach after Turbo updates
+document.addEventListener('turbo:render', function() {
+  attachEventListeners();
+});
+
+function attachEventListeners() {
+  // Select all assignments
+  const selectAll = document.getElementById('select-all-assignments');
+  if (selectAll) {
+    selectAll.addEventListener('change', function() {
+      const checkboxes = document.querySelectorAll('.assignment-checkbox');
+      checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+  }
+
+  // Unassign button
+  const unassignBtn = document.getElementById('unassign-btn');
+  if (unassignBtn) {
+    unassignBtn.addEventListener('click', function() {
+      const selectedAssignments = Array.from(document.querySelectorAll('.assignment-checkbox:checked'))
+        .map(cb => cb.value);
+      
+      if (selectedAssignments.length === 0) {
+        alert('Please select assignments to unassign from the table below');
+        return;
+      }
+      
+      if (!confirm(`Are you sure you want to unassign ${selectedAssignments.length} license(s)?`)) {
+        return;
+      }
+      
+      const form = document.getElementById('unassign-form');
+        const payload = document.getElementById('unassign-payload');
+
+        // Clear only our dynamic fields
+        payload.innerHTML = '';
+
+        selectedAssignments.forEach(id => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'assignment_ids[]';
+        input.value = id;
+        payload.appendChild(input);
+        });
+
+        form.requestSubmit();
+    });
+  }
+
+  // Assign form validation
+  const assignForm = document.getElementById('assignment-form');
+  if (assignForm) {
+    assignForm.addEventListener('submit', function(e) {
+      const products = document.querySelectorAll('.product-checkbox:checked');
+      const users = document.querySelectorAll('.user-checkbox:checked');
+      
+      if (products.length === 0) {
+        e.preventDefault();
+        alert('Please select at least one product');
+        return false;
+      }
+      
+      if (users.length === 0) {
+        e.preventDefault();
+        alert('Please select at least one user');
+        return false;
+      }
+    });
+  }
+}
+
+// Clear checkboxes after successful submission
+document.addEventListener('turbo:submit-end', function(event) {
+  if (event.detail.success) {
+    document.querySelectorAll('.product-checkbox:checked').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.user-checkbox:checked').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.assignment-checkbox:checked').forEach(cb => cb.checked = false);
+    const selectAll = document.getElementById('select-all-assignments');
+    if (selectAll) selectAll.checked = false;
+  }
+});
+</script>

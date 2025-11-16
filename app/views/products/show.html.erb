@@ -1,0 +1,50 @@
+<div class="row mb-4">
+  <div class="col">
+    <h1><%= @product.name %></h1>
+  </div>
+  <div class="col-auto">
+    <%= link_to "Edit", edit_product_path(@product), class: "btn btn-warning" %>
+    <%= link_to "Back", products_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Description</h5>
+    <p class="card-text"><%= simple_format(@product.description) %></p>
+  </div>
+</div>
+
+<% if @product.subscriptions.any? %>
+  <div class="mt-4">
+    <h3>Subscriptions</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Licenses</th>
+            <th>Status</th>
+            <th>Expires</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product.subscriptions.includes(:account).each do |subscription| %>
+            <tr>
+              <td><%= link_to subscription.account.name, subscription.account %></td>
+              <td><%= subscription.number_of_licenses %></td>
+              <td>
+                <% if subscription.active? %>
+                  <span class="badge bg-success">Active</span>
+                <% else %>
+                  <span class="badge bg-secondary">Expired</span>
+                <% end %>
+              </td>
+              <td><%= subscription.expires_at.strftime("%B %d, %Y") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>

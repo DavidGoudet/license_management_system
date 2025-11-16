@@ -1,0 +1,16 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Accounts", accounts_path %></li>
+    <li class="breadcrumb-item"><%= link_to @account.name, account_path(@account) %></li>
+    <li class="breadcrumb-item"><%= link_to "Users", account_users_path(@account) %></li>
+    <li class="breadcrumb-item active">New User</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1>New User</h1>
+    <%= render "form", user: @user %>
+    <%= link_to "Back", account_users_path(@account), class: "btn btn-secondary mt-3" %>
+  </div>
+</div>

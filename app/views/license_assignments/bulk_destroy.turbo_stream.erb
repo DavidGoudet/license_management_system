@@ -1,0 +1,14 @@
+<%= turbo_stream.replace "flash-messages" do %>
+  <%= render "license_assignments/flash" %>
+<% end %>
+
+<%= turbo_stream.replace "product-licenses-list" do %>
+  <%= render "license_assignments/product_list",
+              products_with_licenses: @products_with_licenses %>
+<% end %>
+
+<%= turbo_stream.replace "current-assignments-table" do %>
+  <%= render "license_assignments/assignments_table",
+              current_assignments: @current_assignments %>
+<% end %>
+  

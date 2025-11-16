@@ -1,0 +1,74 @@
+<div class="row mb-4">
+  <div class="col">
+    <h1><%= @account.name %></h1>
+  </div>
+  <div class="col-auto">
+    <%= link_to "Edit", edit_account_path(@account), class: "btn btn-warning" %>
+    <%= link_to "Back", accounts_path, class: "btn btn-secondary" %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Users Card -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Users</h5>
+        <p class="card-text display-4"><%= @users_count %></p>
+        <%= link_to "Manage Users", account_users_path(@account), class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subscriptions Card -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Subscriptions</h5>
+        <p class="card-text display-4"><%= @subscriptions_count %></p>
+        <%= link_to "Manage Subscriptions", account_subscriptions_path(@account), class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- License Assignments Card -->
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">License Assignments</h5>
+        <p class="card-text display-4"><%= @assignments_count %></p>
+        <%= link_to "Assign Licenses", account_license_assignments_path(@account), class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @account.subscriptions.active.any? %>
+  <div class="mt-5">
+    <h3>Active Subscriptions</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Total Licenses</th>
+            <th>Used</th>
+            <th>Available</th>
+            <th>Expires</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @account.subscriptions.active.includes(:product).each do |subscription| %>
+            <tr>
+              <td><%= subscription.product.name %></td>
+              <td><%= subscription.number_of_licenses %></td>
+              <td><%= subscription.used_licenses_count %></td>
+              <td><%= subscription.remaining_licenses %></td>
+              <td><%= subscription.expires_at.strftime("%B %d, %Y") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
