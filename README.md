@@ -142,6 +142,10 @@ license_management_system/
 ...
 ```
 
+## Data Modeling
+
+The schema implements a relational model with foreign key constraints and cascading deletes to maintain referential integrity. A compound unique index on `user_id` and `product_id` in license_assignments prevents duplicate licenses, ensuring each user holds at most one license per product. Critical operations are wrapped in database transactions to guarantee atomicity; during bulk assignments, either all licenses are created or none are, preventing partial states and maintaining data consistency.
+
 ## Tech Stack
 
 - Ruby 3.4.7
