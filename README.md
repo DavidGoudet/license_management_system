@@ -84,12 +84,6 @@ Run all tests:
 bundle exec rspec
 ```
 
-## Improvements
-- The authentication layer needs to be implemented
-- We need to add search bars because users and products could grow infinitely
-- A flow for CI/CD should be added (For now, Rubocop was used for formatting)
-- Business improvements: bulk license upload, analytics, better expiration system, notifications.
-
 ## Project Architecture
 The application follows a standard MVC structure, with most features handled through CRUD controllers.
 
@@ -141,6 +135,13 @@ license_management_system/
 ## Data Modeling
 
 The schema implements a relational model with foreign key constraints and cascading deletes to maintain referential integrity. A compound unique index on `user_id` and `product_id` in license_assignments prevents duplicate licenses, ensuring each user holds at most one license per product. Critical operations are wrapped in database transactions to guarantee atomicity; during bulk assignments, either all licenses are created or none are, preventing partial states and maintaining data consistency.
+
+## Future Improvements
+- The authentication layer needs to be implemented
+- We need to add search bars because users and products could grow infinitely
+- A flow for CI/CD should be added (For now, Rubocop was used for formatting)
+- Business improvements: bulk license upload, analytics, better expiration system, notifications.
+
 
 ## Tech Stack
 
