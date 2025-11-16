@@ -84,18 +84,11 @@ Run all tests:
 bundle exec rspec
 ```
 
-
-## Environment Variables
-
-- `DATABASE_URL` - PostgreSQL connection string
-- `RAILS_MASTER_KEY` - Rails master key for encrypted credentials
-- `SECRET_KEY_BASE` - Secret key for sessions
-- `RAILS_ENV` - Environment (development, test, production)
-
 ## Improvements
 - The authentication layer needs to be implemented
 - We need to add search bars because users and products could grow infinitely
 - A flow for CI/CD should be added (For now, Rubocop was used for formatting)
+- Business improvements: bulk license upload, analytics, better expiration system, notifications.
 
 ## Project Architecture
 The application follows a standard MVC structure, with most features handled through CRUD controllers.
